@@ -1,5 +1,6 @@
 ﻿using API_ProyectoFinal.Models;
 using API_ProyectoFinal.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -79,7 +80,7 @@ namespace API_ProyectoFinal.Controllers
         {
             try
             {
-                if (rolDto == null || id != rolDto.RolId)
+                if (rolDto == null)
                 {
                     return BadRequest(new { message = "Datos inválidos para actualizar el rol" });
                 }
@@ -92,7 +93,7 @@ namespace API_ProyectoFinal.Controllers
 
                 await _rolService.updateRol(rolDto, id);
 
-                return NoContent(); 
+                return Ok(existingRol); 
             }
             catch (Exception ex)
             {
@@ -115,7 +116,7 @@ namespace API_ProyectoFinal.Controllers
 
                 await _rolService.deleteRol(id);
 
-                return NoContent();
+                return Ok(new { message = $"Eliminado exitosamente"});
             }
             catch (Exception ex)
             {
