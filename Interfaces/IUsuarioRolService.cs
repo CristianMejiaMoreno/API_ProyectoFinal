@@ -6,6 +6,7 @@ namespace API_ProyectoFinal.Interfaces
     {
         Task<UsuarioRolDTO> createUsuarioRol(UsuarioRolDTO usuarioRol);
         Task updateUsuarioRol(int usuarioId, int nuevoRolId);
+        Task<bool> deleteUsuarioRol(int usuarioId);
 
     }
 
