@@ -671,8 +671,9 @@ namespace API_ProyectoFinal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolId"));
 
-                    b.Property<int>("NombreRol")
-                        .HasColumnType("int");
+                    b.Property<string>("NombreRol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RolId");
 
