@@ -12,14 +12,12 @@ namespace API_ProyectoFinal.Services
             _Context = context;
         }
 
-        // Devuelve lista de DTOs
         public async Task<List<UsuarioRolDTO>> getAllUsuarioRol()
         {
             try
             {
                 var entities = await _Context.UsuarioRoles.ToListAsync();
 
-                // Mapeo a DTOs
                 var dtos = entities.Select(e => new UsuarioRolDTO
                 {
                     UsuarioId = e.UsuarioId,
@@ -34,7 +32,6 @@ namespace API_ProyectoFinal.Services
             }
         }
 
-        // Busca por UsuarioId y devuelve DTO
         public async Task<UsuarioRolDTO> getUsuarioRolByUsuarioId(int usuarioId)
         {
             try
@@ -57,7 +54,6 @@ namespace API_ProyectoFinal.Services
             }
         }
 
-        // Crear registro desde DTO
         public async Task<UsuarioRolDTO> createUsuarioRol(UsuarioRolDTO usuarioRolDTO)
         {
             try
@@ -83,29 +79,44 @@ namespace API_ProyectoFinal.Services
             }
         }
 
-        // Actualizar rol desde IDs, sin devolver nada
         public async Task updateUsuarioRol(int usuarioId, int nuevoRolId)
         {
             try
             {
                 var entity = await _Context.UsuarioRoles.FirstOrDefaultAsync(ur => ur.UsuarioId == usuarioId);
 
-                if (entity == null)
+                if (entity != null)
                 {
-                    entity = new UsuarioRolDTO
-                    {
-                        UsuarioId = usuarioId,
-                        RolId = nuevoRolId
-                    };
-                    _Context.UsuarioRoles.Add(entity);
-                }
-                else
-                {
-                    entity.RolId = nuevoRolId;
-                    _Context.UsuarioRoles.Update(entity);
+                    _Context.UsuarioRoles.Remove(entity);
+                    await _Context.SaveChangesAsync();
                 }
 
+                var nuevoUsuarioRol = new UsuarioRolDTO
+                {
+                    UsuarioId = usuarioId,
+                    RolId = nuevoRolId
+                };
+                _Context.UsuarioRoles.Add(nuevoUsuarioRol);
                 await _Context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error interno del servidor: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> deleteUsuarioRol(int usuarioId)
+        {
+            try
+            {
+                var entity = await _Context.UsuarioRoles.FirstOrDefaultAsync(ur => ur.UsuarioId == usuarioId);
+                if (entity == null)
+                    throw new Exception($"No se encontró el usuarioRol para el usuario con ID {usuarioId}");
+
+                _Context.UsuarioRoles.Remove(entity);
+                await _Context.SaveChangesAsync();
+
+                return true;
             }
             catch (Exception ex)
             {

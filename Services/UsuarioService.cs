@@ -81,11 +81,12 @@ namespace API_ProyectoFinal.Services
                 update_usuario.Nombre = usuario.Nombre;
                 update_usuario.Apellido = usuario.Apellido;
                 update_usuario.Email = usuario.Email;
-                update_usuario.RolId = usuario.RolId;
 
                 await _Context.SaveChangesAsync();
 
                 await _usuarioRolService.updateUsuarioRol(id, usuario.RolId);
+
+                update_usuario.RolId = usuario.RolId;
 
                 return update_usuario;
             }
@@ -96,23 +97,31 @@ namespace API_ProyectoFinal.Services
         }
 
 
+
         public async Task<bool> deleteUser(int id)
         {
             try
             {
                 var usuario = await getUsuarioById(id);
+                if (usuario == null)
+                {
+                    throw new Exception($"No se encontró el usuario con ID {id}");
+                }
 
-                _Context.Remove(usuario);
+                await _usuarioRolService.deleteUsuarioRol(id);
+
+                _Context.Usuarios.Remove(usuario);
 
                 await _Context.SaveChangesAsync();
 
                 return true;
-
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error interno del servidor: {ex.Message}", ex);
+                var innerMessage = ex.InnerException?.Message ?? ex.Message;
+                throw new Exception($"Error interno del servidor: {innerMessage}", ex);
             }
         }
+
     }
 }

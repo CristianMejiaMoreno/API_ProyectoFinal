@@ -20,6 +20,9 @@ builder.Services.AddDbContext<API_Context>(
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<RolService>();
 builder.Services.AddScoped<UsuarioRolService>();
+builder.Services.AddScoped<CiudadService>();
+builder.Services.AddScoped<CursoService>();
+builder.Services.AddScoped<ModalidService>();
 
 var app = builder.Build();
 

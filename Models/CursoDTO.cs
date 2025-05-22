@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace API_ProyectoFinal.Models
 {
@@ -18,15 +19,18 @@ namespace API_ProyectoFinal.Models
         //Relacion categoria curso
         public int CategoriaId { get; set; }
         [ForeignKey("CategoriaId")]
+        [JsonIgnore]
         public virtual CategoriaCursoDTO CategoriaCurso { get; set; }
 
         //Relacion modalidad curso
         public int  ModalidadId { get ; set; }
         [ForeignKey("ModalidadId")]
+        [JsonIgnore]
         public virtual ModalidadDTO Modalidad { get; set; }
         //Relacion nivel curso
         public int NivelId { get; set; }
         [ForeignKey("NivelId")]
+        [JsonIgnore]
         public virtual NivelDificultadDTO NivelDificultad { get;set; }
 
         public virtual ICollection<PreRequisitoCursoDTO> PreRequisitos { get; set; } = new List<PreRequisitoCursoDTO>();

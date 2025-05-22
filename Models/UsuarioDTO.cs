@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace API_ProyectoFinal.Models
 {
@@ -14,15 +15,19 @@ namespace API_ProyectoFinal.Models
         public int RolId { get; set; }
 
         [ForeignKey("RolId")]
-        public virtual RolDTO Rol { get; set; }
+        [JsonIgnore]
+        public virtual RolDTO? Rol { get; set; }
 
-        public virtual ICollection<UsuarioRolDTO> UsuarioRoles { get; }
-             = new List<UsuarioRolDTO>();
+        [JsonIgnore]
+        public virtual ICollection<UsuarioRolDTO> UsuarioRoles { get; } = new List<UsuarioRolDTO>();
 
+        [JsonIgnore]
         public virtual ICollection<InscripcionDTO> Inscripciones { get; set; } = new List<InscripcionDTO>();
 
+        [JsonIgnore]
         public virtual ICollection<CalificacionDTO> Calificaciones { get; set; } = new List<CalificacionDTO>();
 
+        [JsonIgnore]
         public virtual ICollection<CertificadoDTO> Certificados { get; set; } = new List<CertificadoDTO>();
 
     }

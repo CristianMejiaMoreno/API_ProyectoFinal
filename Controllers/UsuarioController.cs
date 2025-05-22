@@ -76,7 +76,7 @@ namespace API_ProyectoFinal.Controllers
         {
             try
             {
-                if (id != usuarioDto.UsuarioId)
+                if (id == null)
                 {
                     return BadRequest(new { message = "El ID proporcionado no coincide con el del recurso." });
                 }
@@ -110,7 +110,7 @@ namespace API_ProyectoFinal.Controllers
 
                 await _usuarioService.deleteUser(id);
 
-                return NoContent();
+                return Ok(new {message = $"Usuario eliminado exitosamente"});
             }
             catch (Exception ex)
             {
